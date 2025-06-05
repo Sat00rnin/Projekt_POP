@@ -44,8 +44,3 @@ def add_incident():
     inc.marker = map_widget.set_marker(inc.coordinates[0], inc.coordinates[1], text=title)
     incidents.append(inc)
     refresh_list()
-
-    entry_title.delete(0, END)
-    entry_location.delete(0, END)
-    entry_date.delete(0, END)
-    text_desc.delete("1.0", END)
