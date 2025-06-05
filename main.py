@@ -5,7 +5,9 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
+
 incidents = []
+
 
 class Incident:
     def __init__(self, title, location, date, incident_type, description):
@@ -27,3 +29,23 @@ class Incident:
             return [lat, lon]
         except:
             return [48.3794, 31.1656]
+
+def add_incident():
+    title = entry_title.get()
+    location = entry_location.get()
+    date = entry_date.get()
+    incident_type = combo_type.get()
+    description = text_desc.get("1.0", END).strip()
+
+    if not title or not location or not date or not incident_type:
+        return
+
+    inc = Incident(title, location, date, incident_type, description)
+    inc.marker = map_widget.set_marker(inc.coordinates[0], inc.coordinates[1], text=title)
+    incidents.append(inc)
+    refresh_list()
+
+    entry_title.delete(0, END)
+    entry_location.delete(0, END)
+    entry_date.delete(0, END)
+    text_desc.delete("1.0", END)
