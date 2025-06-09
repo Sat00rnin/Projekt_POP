@@ -45,3 +45,26 @@ def add_incident():
     incidents.append(inc)
     refresh_list()
 
+    entry_title.delete(0, END)
+    entry_location.delete(0, END)
+    entry_date.delete(0, END)
+    text_desc.delete("1.0", END)
+
+
+def refresh_list():
+    listbox.delete(0, END)
+    for idx, i in enumerate(incidents):
+        listbox.insert(idx, f"{i.date} - {i.title} ({i.incident_type})")
+
+
+def show_details():
+    idx = listbox.curselection()
+    if not idx:
+        return
+    inc = incidents[idx[0]]
+    details_frame.grid(row=7, column=0, columnspan=4, sticky=W, padx=10, pady=5)
+    label_info.config(text=f"{inc.title}\n{inc.location}\n{inc.date}\n{inc.incident_type}\n{inc.description}")
+    map_widget.set_position(inc.coordinates[0], inc.coordinates[1])
+    map_widget.set_zoom(8)
+    main_frame.grid_remove()
+
