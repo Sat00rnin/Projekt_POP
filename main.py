@@ -104,18 +104,15 @@ root.title("System śledzenia incydentów - Ukraina")
 root.geometry("1100x700")
 root.configure(bg="#C0D9D9")
 
-# Mapa
 map_widget = tkintermapview.TkinterMapView(root, width=900, height=400)
 map_widget.set_position(48.3794, 31.1656)
 map_widget.set_zoom(6)
 map_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
-# Główny panel
 main_frame = Frame(root)
 main_frame = Frame(root, bg="#C0D9D9")
 main_frame.grid(row=1, column=0, columnspan=4, sticky=W, padx=10)
 
-# Formularz dodawania
 Label(main_frame, text="Tytuł").grid(row=0, column=0, sticky=W)
 entry_title = Entry(main_frame, width=30)
 entry_title.grid(row=0, column=1, sticky=W)
@@ -139,13 +136,11 @@ text_desc.grid(row=4, column=1, sticky=W)
 
 Button(main_frame, text="Dodaj incydent", command=add_incident).grid(row=5, column=1, pady=5)
 
-# Lista incydentów
 listbox = Listbox(main_frame, width=50)
 listbox.grid(row=0, column=2, rowspan=5, padx=10)
 Button(main_frame, text="Pokaż szczegóły", command=show_details).grid(row=5, column=2)
 Button(main_frame, text="Usuń", command=delete_incident).grid(row=5, column=3)
 
-# Filtry
 Label(main_frame, text="Filtruj wg typu").grid(row=6, column=0, sticky=W)
 combo_filter_type = ttk.Combobox(main_frame, values=["Ostrzał", "Atak dronów", "Pomoc", "Zniszczenie", "Ofiary"])
 combo_filter_type.grid(row=6, column=1, sticky=W)
@@ -157,7 +152,6 @@ entry_filter_date = Entry(main_frame, width=15)
 entry_filter_date.grid(row=7, column=1, sticky=W)
 Button(main_frame, text="Filtruj", command=filter_by_date).grid(row=7, column=2)
 
-# Panel szczegółów
 details_frame = Frame(root)
 details_frame.grid_remove()
 label_info = Label(details_frame, text="", justify=LEFT)
