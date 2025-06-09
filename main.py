@@ -67,4 +67,3 @@ def show_details():
     map_widget.set_position(inc.coordinates[0], inc.coordinates[1])
     map_widget.set_zoom(8)
     main_frame.grid_remove()
-
