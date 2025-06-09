@@ -67,3 +67,36 @@ def show_details():
     map_widget.set_position(inc.coordinates[0], inc.coordinates[1])
     map_widget.set_zoom(8)
     main_frame.grid_remove()
+
+def return_to_main():
+    details_frame.grid_remove()
+    main_frame.grid(row=1, column=0, columnspan=4, sticky=W, padx=10)
+
+def delete_incident():
+    idx = listbox.curselection()
+    if not idx:
+        return
+    incidents[idx[0]].marker.delete()
+    del incidents[idx[0]]
+    refresh_list()
+    label_info.config(text="")
+    return_to_main()
+
+def filter_by_type():
+    t = combo_filter_type.get()
+    filtered = [i for i in incidents if i.incident_type == t]
+    draw_markers(filtered)
+
+
+def filter_by_date():
+    d = entry_filter_date.get()
+    filtered = [i for i in incidents if i.date == d]
+    draw_markers(filtered)
+
+
+def draw_markers(filtered_list):
+    map_widget.delete_all_marker()
+    for i in filtered_list:
+        i.marker = map_widget.set_marker(i.coordinates[0], i.coordinates[1], text=i.title)
+
+
