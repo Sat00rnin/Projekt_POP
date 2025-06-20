@@ -82,6 +82,61 @@ def delete_incident():
     label_info.config(text="")
     return_to_main()
 
+def edit_incident():
+    global edit_index
+    idx = listbox.curselection()
+    if not idx:
+        return
+    edit_index = idx[0]
+    inc = incidents[edit_index]
+
+    entry_title.delete(0, END)
+    entry_title.insert(0, inc.title)
+
+    entry_location.delete(0, END)
+    entry_location.insert(0, inc.location)
+
+    entry_date.delete(0, END)
+    entry_date.insert(0, inc.date)
+
+    combo_type.set(inc.incident_type)
+
+    text_desc.delete("1.0", END)
+    text_desc.insert("1.0", inc.description)
+
+    Button(main_frame, text="Zapisz zmiany", command=save_edited_incident).grid(row=5, column=0, pady=5)
+
+def save_edited_incident():
+    global edit_index
+    if edit_index is None:
+        return
+
+    title = entry_title.get()
+    location = entry_location.get()
+    date = entry_date.get()
+    incident_type = combo_type.get()
+    description = text_desc.get("1.0", END).strip()
+
+    if not title or not location or not date or not incident_type:
+        return
+
+    old_marker = incidents[edit_index].marker
+    if old_marker:
+        old_marker.delete()
+
+    edited_incident = Incident(title, location, date, incident_type, description)
+    edited_incident.marker = map_widget.set_marker(edited_incident.coordinates[0], edited_incident.coordinates[1], text=title)
+
+    incidents[edit_index] = edited_incident
+    edit_index = None
+
+    refresh_list()
+
+    entry_title.delete(0, END)
+    entry_location.delete(0, END)
+    entry_date.delete(0, END)
+    text_desc.delete("1.0", END)
+
 def filter_by_type():
     t = combo_filter_type.get()
     filtered = [i for i in incidents if i.incident_type == t]
@@ -109,7 +164,6 @@ map_widget.set_position(48.3794, 31.1656)
 map_widget.set_zoom(6)
 map_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
-main_frame = Frame(root)
 main_frame = Frame(root, bg="#C0D9D9")
 main_frame.grid(row=1, column=0, columnspan=4, sticky=W, padx=10)
 
@@ -139,6 +193,7 @@ Button(main_frame, text="Dodaj incydent", command=add_incident).grid(row=5, colu
 listbox = Listbox(main_frame, width=50)
 listbox.grid(row=0, column=2, rowspan=5, padx=10)
 Button(main_frame, text="Pokaż szczegóły", command=show_details).grid(row=5, column=2)
+Button(main_frame, text="Edytuj", command=edit_incident).grid(row=5, column=4)
 Button(main_frame, text="Usuń", command=delete_incident).grid(row=5, column=3)
 
 Label(main_frame, text="Filtruj wg typu").grid(row=6, column=0, sticky=W)
